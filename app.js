@@ -19,13 +19,17 @@ let
 console.log(args);
 
 sockets.input = io(server);
-sockets.input.on('connection', function(){
+sockets.input.on('connection', function(sock){
   console.log('HELLO');
+  sock.on('event', function(data){
+    console.log('SE AKOUO: ');
+    console.log(data);
+  });
 });
 
-sockets.input.on('event', function(data){
-  console.log('SE AKOUO');
-});
+// sockets.input.on('event', function(data){
+//   console.log('SE AKOUO');
+// });
 
 if(connectionAddress){
   sockets.output = ioClient.connect(connectionAddress);
