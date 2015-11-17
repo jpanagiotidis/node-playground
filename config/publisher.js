@@ -1,12 +1,11 @@
 'use strict';
 
+let data = require('./amqp-data');
+
 module.exports = {
 	NAME: 'bds-account-finder',
 	AMQP: {
-		EXCHANGE: {
-			id: 'ex-products',
-			durable: false,
-			type: 'topic'
-		}
+		EXCHANGE: data.EXCHANGE,
+		QUEUE: data.QUEUE
 	}
 }

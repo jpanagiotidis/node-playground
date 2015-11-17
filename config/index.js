@@ -11,8 +11,7 @@ function getConfiguration(){
 	let 
 		args = processArgs(),
 		config = {
-			NAME: chance.hash(),
-			MOUFA: 'ngmfa'
+			NAME: chance.hash()
 		},
 		fileConfig = undefined
 	;

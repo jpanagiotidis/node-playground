@@ -22,17 +22,35 @@ let
 console.log(config);
 
 if(config.AMQP){
-  amqp = require('./src/rabbitmq');
+  amqp = require('./src/rabbit-handler');
 
   if(config.AMQP.EXCHANGE){
     replCallbacks.push(function(data){
-      co(amqp.publish(config.AMQP.EXCHANGE, 'find.user.*', data));
+      co(amqp.publish(config.AMQP.EXCHANGE, 'find.user.*', data)).catch(
+        function(err){
+          console.log('ERROR');
+          console.log(err);
+        }
+      );
     });
   }
 
-  if(config.AMQP.BIND){
-    co(amqp.bindQueue(config.AMQP.BIND));
+  if(config.AMQP.QUEUE){
+    
   }
+
+  if(config.AMQP.BIND){
+    co(amqp.bindQueue(config.AMQP.BIND)).catch(
+      function(err){
+        console.log('ERROR');
+        console.log(err);
+      }
+    );
+  }
+
+  // if(config.AMQP.BIND){
+  //   co(amqp.bindQueue(config.AMQP.BIND));
+  // }
 }
 
 if(config.REPL){
