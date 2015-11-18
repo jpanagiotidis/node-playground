@@ -1,27 +1,42 @@
 'use strict';
 
 let 
+  co = require('co'),
   config = require('./src/config'),
   replCallbacks = undefined,
   NodeAgent = require('./src/node-agent'),
   sNode = new NodeAgent(config)
 ;
 
-if(config.REPL){
-  replCallbacks = require('./src/dummy-repl').callbacks;
-  
-  replCallbacks.push(function(data){
-      console.log('REPL...');
-    });
+co(sNode.init()).then(
+  function(){
+    if(config.REPL){
+      replCallbacks = require('./src/dummy-repl').callbacks;
+      
+      replCallbacks.push(function(data){
+        console.log('REPL...');
+      });
 
-  if(config.AMQP.EXCHANGE){
-    let exchange = config.AMQP.EXCHANGE;
-    replCallbacks.push(function(data){
-      console.log('SENDING MESSAGE THROUGH EXCHANGE ' + exchange.ID);
-      sNode.amqp.publish(exchange, '', data);
-    });
+      if(config.AMQP.EXCHANGE){
+        let exchange = config.AMQP.EXCHANGE;
+        replCallbacks.push(function(data){
+          console.log('SENDING MESSAGE THROUGH EXCHANGE ' + exchange.ID);
+          co(sNode.amqp.publish(exchange, '', data)).catch(
+            function(err){
+              console.error('ERROR');
+              console.error(err);
+            }
+          );
+        });
+      }
+    }
   }
-}
+).catch(
+  function(err){
+    console.error('ERROR');
+    console.error(err);
+  }
+);
 
 // co = require('co'),
 
