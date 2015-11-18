@@ -6,7 +6,7 @@ module.exports = {
 	AMQP: {
 		BIND_QUEUE: [
 			{
-				EXCHANGE: data.EXCHANGE
+				EXCHANGE: data.EXCHANGE_ACCOUNT_FINDER
 				// KEYS: [
 				// 	'find.user.*'
 				// ],
