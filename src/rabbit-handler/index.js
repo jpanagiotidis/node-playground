@@ -48,23 +48,6 @@ function *bindQueue(config){
 	config = addConfigurationData(config);
 	let b = new RabbitQueueBindingHandler(config);
 	yield b.init();
-	
-	// yield init();
-	// let q = new RabbitQueueHandler(connection, {});
-	// yield q.init();
-
-
-	// let ex = data.EXCHANGE;
-	// yield addExcahnge(ex);
-	// if(!bindings[ex.id]){
-	// 	bindings[ex.id] = yield channel.assertQueue('', {exclusive: true});
-
-	// 	yield _.map(data.KEYS, function(key){
-	// 		return channel.bindQueue(bindings[ex.id].queue, ex.id, key);
-	// 	});
-		
-	// 	channel.consume(bindings[ex.id].queue, data.CALLBACK);
-	// }
 }
 
 module.exports = {

@@ -19,10 +19,12 @@ class RabbitQueueBindingHandler extends RabbitBaseHandler{
 		if(config.QUEUE){
 			self.queueData = config.QUEUE;
 		}else{
+			console.log('YOYOYOYOYO');
 			self.queueData = {
 				OPTIONS: {
 					exclusive: true,
-					durable: false
+					durable: false,
+					autoDelete: true
 				}
 			};
 		} 
@@ -40,7 +42,8 @@ class RabbitQueueBindingHandler extends RabbitBaseHandler{
 		self.exchange = new RabbitExchangeHandler(
 			_.extend(
 				{
-					connection: self.connection
+					connection: self.connection,
+					channel: self.channel
 				},
 				self.exchangeData
 			)
@@ -50,7 +53,8 @@ class RabbitQueueBindingHandler extends RabbitBaseHandler{
 		self.queue = new RabbitQueueHandler(
 			_.extend(
 				{
-					connection: self.connection
+					connection: self.connection,
+					channel: self.channel
 				},
 				self.queueData
 			)

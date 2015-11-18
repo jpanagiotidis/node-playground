@@ -9,10 +9,10 @@ module.exports = {
 			// KEYS: [
 			// 	'find.user.*'
 			// ],
-			CALLBACK: function(data){
-				console.log('DATA FROM EXCHANGE:');
-				console.log(data.content.toString('utf8'));
-			}
+			// CALLBACK: function(data){
+			// 	console.log('DATA FROM EXCHANGE:');
+			// 	console.log(data.content.toString('utf8'));
+			// }
 		}
 	}
 }

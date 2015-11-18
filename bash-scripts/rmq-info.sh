@@ -1,0 +1,7 @@
+#!/bin/bash
+rabbitmqctl list_connections
+rabbitmqctl list_channels
+rabbitmqctl list_vhosts
+rabbitmqctl list_queues
+rabbitmqctl list_exchanges
+rabbitmqctl list_bindings

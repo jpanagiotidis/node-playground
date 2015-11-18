@@ -9,17 +9,9 @@ class RabbitQueueHandler extends RabbitBaseHandler{
 		super(config);
 
 		let self = this;
-		
-		if(!config.queue){
-			config.queue = {
-				exclusive: true,
-				durable: false,
-				autoDelete: true
-			};
-		}
 
-		self.id = config.queue.ID ? config.queue.ID : '';
-		self.options = config.queue.options ? config.options : {};
+		self.id = config.ID ? config.ID : '';
+		self.options = config.OPTIONS ? config.OPTIONS : {};
 	}
 
 	*init(){
