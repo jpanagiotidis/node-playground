@@ -1,20 +1,17 @@
 'use strict';
 
-let 
-	_ = require('underscore'),
-	amqp = require('amqplib'),
-	RabbitExchangeHandler = require('./rabbit-exchange-handler'),
-	RabbitQueueHandler = require('./rabbit-queue-handler'),
-	RabbitQueueBindingHandler = require('./rabbit-queue-binding-handler')
-;
+let _ = require('underscore');
+let amqp = require('amqplib');
+let RabbitExchangeHandler = require('./rabbit-exchange-handler');
+let RabbitQueueHandler = require('./rabbit-queue-handler');
+let RabbitQueueBindingHandler = require('./rabbit-queue-binding-handler');
 
 class RabbitHandler{
-	constructor(config){
-		let
-      self = this
-    ;
+	constructor(config, eventBus){
+		let self = this;
 
     self.config = config;
+    self.eventBus = eventBus;
     self.connection = undefined;
 		self.configBase = {};
 		self.exchanges = {};
@@ -25,9 +22,7 @@ class RabbitHandler{
 	}
 
 	*init(){
-		let
-      self = this
-    ;
+		let self = this;
 
 		if(!self.isInitialized){
 			console.log('INITIALIZING RABBITMQ HANDLER ');
@@ -36,7 +31,6 @@ class RabbitHandler{
 
 			if(self.config.BIND_QUEUE){
 				yield _.map(self.config.BIND_QUEUE, function(data){
-					console.log(data);
 					return bindQueue(self, data);
 				});
 			}
@@ -46,9 +40,7 @@ class RabbitHandler{
 	}
 
 	*publish(exchangeData, key, message){
-		let
-      self = this
-    ;
+		let self = this;
 
 		yield addExcahnge(self, exchangeData);
 		yield self.exchanges[exchangeData.ID].publish(key, message);
@@ -76,6 +68,11 @@ function *bindQueue(rmq, config){
 	config = getConfigurationData(rmq, config);
 	let b = new RabbitQueueBindingHandler(config);
 	yield b.init();
+}
+
+function *bindExchange(rmq, config){
+	config = getConfigurationData(rmq, config);
+
 }
 
 module.exports = RabbitHandler;

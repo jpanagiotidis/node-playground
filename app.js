@@ -1,12 +1,13 @@
 'use strict';
 
-let 
-  co = require('co'),
-  config = require('./src/config'),
-  replCallbacks = undefined,
-  NodeAgent = require('./src/node-agent'),
-  sNode = new NodeAgent(config)
-;
+let co = require('co');
+let config = require('./src/config');
+let replCallbacks = undefined;
+let NodeAgent = require('./src/node-agent');
+let sNode = new NodeAgent(config);
+let EVENTS = sNode.constants.EVENTS;
+
+global.ROOT = __dirname;
 
 co(sNode.init()).then(
   function(){
@@ -37,6 +38,11 @@ co(sNode.init()).then(
     console.error(err);
   }
 );
+
+sNode.eventBus.on(EVENTS.AMQP.QUEUE.MESSAGE, function(queueID, message){
+  console.log('RECEIVED QUEUE MESSAGE ' + queueID);
+  console.log(message.content.toString());
+})
 
 // co = require('co'),
 

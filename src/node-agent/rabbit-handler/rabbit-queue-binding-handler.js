@@ -19,7 +19,6 @@ class RabbitQueueBindingHandler extends RabbitBaseHandler{
 		if(config.QUEUE){
 			self.queueData = config.QUEUE;
 		}else{
-			console.log('YOYOYOYOYO');
 			self.queueData = {
 				OPTIONS: {
 					exclusive: true,

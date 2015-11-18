@@ -1,30 +1,27 @@
 'use strict';
 
-let 
-  _ = require('underscore'),  
-  eventBus = require('./event-bus'),
-  RabbitHandler = require('./rabbit-handler')
-;
+let _ = require('underscore');
+let RabbitHandler = require('./rabbit-handler');
+let eventBus = require('./event-bus');
+let constants = require('./constants');
 
 class NodeAgent{
   constructor(config){
-    let
-      self = this
-    ;
+    let self = this;
 
     self.config = config;
+    self.constants = constants;
+    self.eventBus = eventBus;
     self.amqp = undefined;
 
     if(self.config.AMQP){
-      self.amqp = new RabbitHandler(config.AMQP);
+      self.amqp = new RabbitHandler(config.AMQP, self.eventBus);
     }
   }
 
   *init(){
     console.log('INITIALIZING NODE AGENT...');
-    let
-      self = this
-    ;
+    let self = this;
 
     if(self.amqp){
       yield self.amqp.init();

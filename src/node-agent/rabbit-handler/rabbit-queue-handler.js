@@ -1,8 +1,8 @@
 'use strict';
 
-let
-	RabbitBaseHandler = require('./rabbit-base-handler')
-;
+let RabbitBaseHandler = require('./rabbit-base-handler');
+let eventBus = require('../event-bus');
+let EVENTS = require('../constants').EVENTS.AMQP.QUEUE;
 
 class RabbitQueueHandler extends RabbitBaseHandler{
 	constructor(config){
@@ -30,12 +30,9 @@ class RabbitQueueHandler extends RabbitBaseHandler{
 			self = this
 		;
 
-		console.log(self.id);
 		self.channel.consume(self.id, function(data){
-			console.log('QUEUE MESSAGE ARRIVED: ');
-			console.log(data.content.toString());
+			eventBus.emit(EVENTS.MESSAGE, self.id, data);
 		});
-		console.log('VCVCCVCCV');
 	}
 }
 
