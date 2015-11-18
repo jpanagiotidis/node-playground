@@ -1,29 +1,47 @@
 'use strict';
 
 let 
-  _ = require('underscore'),
-  co = require('co'),
-  readline = require('readline').createInterface({
-    input: process.stdin,
-    output: process.stdout
-  }),
-  // app = require('koa')(),
-  // server = require('http').createServer(app.callback()),
-  // io = require('socket.io'),
-  // ioClient = require('socket.io-client'),
-  config = require('./config'),
-  // port = config['PORT'] ? config['PORT'] : 5678,
-  // connectionAddress = config['CONNECT'] ? config['CONNECT'] : undefined,
-  // sockets = {},
-  amqp = undefined,
-  replCallbacks = []
+  config = require('./src/config'),
+  replCallbacks = undefined,
+  NodeAgent = require('./src/node-agent'),
+  sNode = new NodeAgent(config)
 ;
 
-console.log(config);
+if(config.REPL){
+  replCallbacks = require('./src/dummy-repl').callbacks;
+  
+  replCallbacks.push(function(data){
+      console.log('REPL...');
+    });
 
-if(config.AMQP){
-  amqp = require('./src/rabbit-handler');
+  if(config.AMQP.EXCHANGE){
+    let exchange = config.AMQP.EXCHANGE;
+    replCallbacks.push(function(data){
+      console.log('SENDING MESSAGE THROUGH EXCHANGE ' + exchange.ID);
+      sNode.amqp.publish(exchange, '', data);
+    });
+  }
+}
 
+// co = require('co'),
+
+// app = require('koa')(),
+// server = require('http').createServer(app.callback()),
+// io = require('socket.io'),
+// ioClient = require('socket.io-client'),
+// config = require('./config'),
+// port = config['PORT'] ? config['PORT'] : 5678,
+// connectionAddress = config['CONNECT'] ? config['CONNECT'] : undefined,
+// sockets = {},
+// rmq = undefined,
+
+// console.log(config);
+
+// if(config.AMQP){
+  
+  // rmq =
+
+  /*
   if(config.AMQP.EXCHANGE){
     replCallbacks.push(function(data){
       co(amqp.publish(config.AMQP.EXCHANGE, 'find.user.*', data)).catch(
@@ -47,29 +65,16 @@ if(config.AMQP){
       }
     );
   }
+  */
 
   // if(config.AMQP.BIND){
   //   co(amqp.bindQueue(config.AMQP.BIND));
   // }
-}
+// }
 
-if(config.REPL){
-  (function dummyREPL(){
-    readline.question("Type next command:", function(replData) {
-      // console.log(replData);
-      // if(sockets.output){
-      //   console.log('SENDING');
-      //   sockets.output.emit('event', {data:replData});
-      // }
-      _.each(replCallbacks, function(cb){
-        if(_.isFunction(cb)){
-          cb(replData);
-        }
-      });
-      dummyREPL();
-    });
-  })();  
-}
+/*
+
+*/
 
 // co()
 // let testData = {
