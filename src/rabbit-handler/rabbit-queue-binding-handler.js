@@ -8,8 +8,8 @@ let
 ;
 
 class RabbitQueueBindingHandler extends RabbitBaseHandler{
-	constructor(connection, config){
-		super(connection);
+	constructor(config){
+		super(config);
 
 		let self = this;
 
@@ -37,9 +37,24 @@ class RabbitQueueBindingHandler extends RabbitBaseHandler{
 		;
 
 		yield super.init();
-		self.exchange = new RabbitExchangeHandler(self.connection, self.exchangeData);
+		self.exchange = new RabbitExchangeHandler(
+			_.extend(
+				{
+					connection: self.connection
+				},
+				self.exchangeData
+			)
+		);
 		yield self.exchange.init();
-		self.queue = new RabbitQueueHandler(self.connection, self.queueData);
+
+		self.queue = new RabbitQueueHandler(
+			_.extend(
+				{
+					connection: self.connection
+				},
+				self.queueData
+			)
+		);
 		yield self.queue.init();
 
 		yield _.map(self.keys, function(key){
@@ -47,11 +62,6 @@ class RabbitQueueBindingHandler extends RabbitBaseHandler{
 		});
 
 		yield self.queue.consume();
-		// console.log(self.queue.id);
-		// self.channel.consume(self.queue.id, function(data){
-		// 	console.log('JJJJJJ');
-		// })
-		// console.log('test');
 	}
 }
 

@@ -5,11 +5,14 @@ let
 ;
 
 class RabbitExchangeHandler extends RabbitBaseHandler{
-	constructor(connection, data){
-		super(connection);
-		this.id = data.ID;
-		this.durable = data.DURABLE;
-		this.type = data.TYPE;
+	constructor(config){
+		super(config);
+
+		let self = this;
+
+		self.id = config.ID;
+		self.options = config.OPTIONS;
+		self.type = config.TYPE;
 	}
 
 	*init(){
@@ -19,9 +22,7 @@ class RabbitExchangeHandler extends RabbitBaseHandler{
 		yield self.channel.assertExchange(
 			self.id,
 			self.type,
-			{
-				durable: self.durable
-			}
+			self.options
 		);
 	}
 

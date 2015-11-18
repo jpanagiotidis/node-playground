@@ -5,17 +5,21 @@ let
 ;
 
 class RabbitQueueHandler extends RabbitBaseHandler{
-	constructor(connection, data){
-		super(connection);
+	constructor(config){
+		super(config);
 
 		let self = this;
 		
-		if(!data){
-			data = {};
+		if(!config.queue){
+			config.queue = {
+				exclusive: true,
+				durable: false,
+				autoDelete: true
+			};
 		}
 
-		data.ID ? self.id = data.ID : self.id = '';
-		data.options ? self.options = data.options : self.options = {};
+		self.id = config.queue.ID ? config.queue.ID : '';
+		self.options = config.queue.options ? config.options : {};
 	}
 
 	*init(){
@@ -37,7 +41,7 @@ class RabbitQueueHandler extends RabbitBaseHandler{
 		console.log(self.id);
 		self.channel.consume(self.id, function(data){
 			console.log('QUEUE MESSAGE ARRIVED: ');
-			console.log(data.content);
+			console.log(data.content.toString());
 		});
 		console.log('VCVCCVCCV');
 	}

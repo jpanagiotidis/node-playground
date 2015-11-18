@@ -1,9 +1,9 @@
 'use strict';
 
 class RabbitBaseHandler{
-	constructor(connection){
-		this.connection = connection;
-		this.channel = undefined;
+	constructor(config){
+		this.connection = config.connection;
+		this.channel = config.channel;
 	}
 
 	*init(){

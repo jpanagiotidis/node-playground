@@ -7,6 +7,7 @@ let
 	RabbitQueueHandler = require('./rabbit-queue-handler'),
 	RabbitQueueBindingHandler = require('./rabbit-queue-binding-handler'),
 	connection = undefined,
+	configBase = {},
 	exchanges = {},
 	queues = {},
 	exchangeBindings = {},
@@ -16,18 +17,24 @@ let
 function *init(){
 	if(!connection){
 		connection = yield amqp.connect();
+		configBase.connection = connection;
 	}
+}
+
+function addConfigurationData(config){
+	return _.extend({}, config, configBase)
 }
 
 function *addQueue(data){
 	
 }
 
-function *addExcahnge(exData){
+function *addExcahnge(config){
 	yield init();
-	if(!exchanges[exData.ID]){
-		exchanges[exData.ID] = new RabbitExchangeHandler(connection, exData);
-		yield exchanges[exData.ID].init();
+	if(!exchanges[config.ID]){
+		config = addConfigurationData(config);
+		exchanges[config.ID] = new RabbitExchangeHandler(config);
+		yield exchanges[config.ID].init();
 	}
 }
 
@@ -36,9 +43,10 @@ function *publish(data, key, message){
 	yield exchanges[data.ID].publish(key, message);
 }
 
-function *bindQueue(data){
+function *bindQueue(config){
 	yield init();
-	let b = new RabbitQueueBindingHandler(connection, data);
+	config = addConfigurationData(config);
+	let b = new RabbitQueueBindingHandler(config);
 	yield b.init();
 	
 	// yield init();
