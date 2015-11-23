@@ -28,11 +28,9 @@ function getConfiguration(){
 }
 
 function getFileConfig(confName){
-	let 
-		out = undefined,
-		absPath = path.resolve(__dirname + '/' + confName + '.js'),
-		fileExists = fs.existsSync(absPath)
-	;
+	let out = undefined;
+	let absPath = path.resolve(__dirname + '/' + confName + '.js');
+	let fileExists = fs.existsSync(absPath);
 	if (fileExists) {
 		out = require('./' + confName);
 	}

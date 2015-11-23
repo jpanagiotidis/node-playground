@@ -1,31 +1,51 @@
-var optionsExchangeDev = {
+var optionsDurable = {
+	durable: true,
+	autoDelete: false
+};
+
+var optionsTemp = {
 	durable: false,
 	autoDelete: true
-};
+}
 
 module.exports = {
 	EXCHANGE_ACCOUNT_FINDER: {
 		ID: 'accountFinder',
 		TYPE: 'fanout',
-		OPTIONS: optionsExchangeDev
+		OPTIONS: optionsDurable
+	},
+	QUEUE_ACCOUNT_FINDER: {
+		ID: 'bds-user-finder-queue',
+		OPTIONS: optionsDurable
 	},
 	EXCHANGE_P1: {
-		ID: 'p1',
+		ID: 'bds-p1-exchange',
 		TYPE: 'topic',
-		OPTIONS: optionsExchangeDev
+		OPTIONS: optionsDurable
+	},
+	QUEUE_P1: {
+		ID: 'bds-p1-queue',
+		OPTIONS: optionsDurable
 	},
 	EXCHANGE_P2: {
-		ID: 'p2',
+		ID: 'bds-p2-exchange',
 		TYPE: 'fanout',
-		OPTIONS: optionsExchangeDev
+		OPTIONS: optionsDurable
+	},
+	QUEUE_P2: {
+		ID: 'bds-p2-queue',
+		OPTIONS: optionsDurable
 	},
 	EXCHANGE_P3: {
-		ID: 'p3',
+		ID: 'bds-p3-exchange',
 		TYPE: 'direct',
-		OPTIONS: optionsExchangeDev
+		OPTIONS: optionsDurable
 	},
-	QUEUE: {
-		ID: 'bds-user-finder-queue',
-		OPTIONS: optionsExchangeDev
+	QUEUE_P3: {
+		ID: 'bds-p3-queue',
+		OPTIONS: optionsDurable
+	},
+	QUEUE_CLIENT: {
+		OPTIONS: optionsTemp
 	}
 };

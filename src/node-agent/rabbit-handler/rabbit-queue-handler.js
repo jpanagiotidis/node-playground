@@ -38,6 +38,14 @@ class RabbitQueueHandler extends RabbitBaseHandler{
 
 		self.channel.ack(message, allUpTo);
 	}
+
+	reject(message, requeue){
+		let self = this;
+
+		requeue = requeue !== undefined ? requeue : true;
+
+		self.channel.reject(message, requeue);
+	}
 }
 
 module.exports = RabbitQueueHandler;

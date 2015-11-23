@@ -103,8 +103,8 @@ function *bindExchange(rmq, config){
 function *consumeQueue(rmq, config){
   config = getConfigurationData(rmq, config.QUEUE);
   let b = new RabbitQueueHandler(config);
-  rmq.queues[b.id] = b;
   yield b.init();
+  rmq.queues[b.id] = b;
   yield b.consume();
 }
 

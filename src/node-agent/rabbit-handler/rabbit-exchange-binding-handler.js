@@ -20,8 +20,6 @@ class RabbitExchangeBindingHandler extends RabbitBaseHandler{
     self.exchangeDestinationData = config.DESTINATION;
     self.exchangeDestination = undefined;
     self.keys = config.KEYS ? config.KEYS : [''];
-
-    console.log('OK');
   }
 
   *init(){
