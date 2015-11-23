@@ -15,10 +15,8 @@ class RabbitQueueHandler extends RabbitBaseHandler{
 	}
 
 	*init(){
-		let 
-			self = this,
-			res = undefined //holds the response of the queue assertion
-		; 
+		let self = this;
+		let res = undefined; //holds the response of the queue assertion
 
 		yield super.init();
 		res = yield self.channel.assertQueue(self.id, self.options);
@@ -26,13 +24,19 @@ class RabbitQueueHandler extends RabbitBaseHandler{
 	}
 
 	*consume(){
-		let 
-			self = this
-		;
+		let self = this;
 
 		self.channel.consume(self.id, function(data){
-			eventBus.emit(EVENTS.MESSAGE, self.id, data);
+			eventBus.emit(EVENTS.MESSAGE, self, data);
 		});
+	}
+
+	ack(message, allUpTo){
+		let self = this;
+
+		allUpTo = allUpTo ? allUpTo : false;
+
+		self.channel.ack(message, allUpTo);
 	}
 }
 

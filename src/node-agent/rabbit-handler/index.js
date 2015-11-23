@@ -3,6 +3,7 @@
 let _ = require('underscore');
 let amqp = require('amqplib');
 let RabbitExchangeHandler = require('./rabbit-exchange-handler');
+let RabbitExchangeBindingHandler = require('./rabbit-exchange-binding-handler');
 let RabbitQueueHandler = require('./rabbit-queue-handler');
 let RabbitQueueBindingHandler = require('./rabbit-queue-binding-handler');
 
@@ -29,6 +30,12 @@ class RabbitHandler{
 			self.connection = yield amqp.connect();
 			self.configBase.connection = self.connection;
 
+			if(self.config.BIND_EXCHANGE){
+				yield _.map(self.config.BIND_EXCHANGE, function(data){
+					return bindExchange(self, data);
+				});
+			}
+			
 			if(self.config.BIND_QUEUE){
 				yield _.map(self.config.BIND_QUEUE, function(data){
 					return bindQueue(self, data);
@@ -72,7 +79,8 @@ function *bindQueue(rmq, config){
 
 function *bindExchange(rmq, config){
 	config = getConfigurationData(rmq, config);
-
+	let b = new RabbitExchangeBindingHandler(config);
+	yield b.init();
 }
 
 module.exports = RabbitHandler;

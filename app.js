@@ -39,9 +39,24 @@ co(sNode.init()).then(
   }
 );
 
-sNode.eventBus.on(EVENTS.AMQP.QUEUE.MESSAGE, function(queueID, message){
-  console.log('RECEIVED QUEUE MESSAGE ' + queueID);
+sNode.eventBus.on(EVENTS.AMQP.QUEUE.MESSAGE, function(queue, message){
+  console.log('RECEIVED QUEUE MESSAGE ' + queue.id);
   console.log(message.content.toString());
+  queue.ack(message);
+  // co(queue.ack(message)).then(
+  //   function(res){
+  //     console.log(res);
+  //   },
+  //   function(err){
+  //     console.log('ERROR');
+  //     console.log(err);
+  //   }
+  // ).catch(
+  //   function(err){
+  //     console.log('ERROR');
+  //     console.log(err);
+  //   }
+  // );
 })
 
 // co = require('co'),
