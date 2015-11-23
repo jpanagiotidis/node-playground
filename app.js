@@ -43,23 +43,15 @@ sNode.eventBus.on(EVENTS.AMQP.QUEUE.MESSAGE, function(queue, message){
   console.log('RECEIVED QUEUE MESSAGE ' + queue.id);
   console.log(message.content.toString());
   queue.ack(message);
-  // co(queue.ack(message)).then(
-  //   function(res){
-  //     console.log(res);
-  //   },
-  //   function(err){
-  //     console.log('ERROR');
-  //     console.log(err);
-  //   }
-  // ).catch(
-  //   function(err){
-  //     console.log('ERROR');
-  //     console.log(err);
-  //   }
-  // );
-})
-
-// co = require('co'),
+  if(config.TYPE === 'B'){
+    co(sNode.amqp.publish('', 'bds-user-finder-queue', 'DADA')).catch(
+      function(err){
+        console.error('ERROR');
+        console.error(err);
+      }
+    );
+  }
+});
 
 // app = require('koa')(),
 // server = require('http').createServer(app.callback()),

@@ -5,7 +5,8 @@ let data = require('./amqp-data');
  * Binds a queue to an exchange
  */
 module.exports = {
-	AMQP: {
+  TYPE: 'B',
+  AMQP: {
 		BIND_EXCHANGE: [
 			{
 				SOURCE: data.EXCHANGE_ACCOUNT_FINDER,

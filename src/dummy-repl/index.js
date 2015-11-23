@@ -10,7 +10,7 @@ let
 ;
 
 (function dummyREPL(){
-  readline.question("Type next command:", function(replData) {
+  readline.question("Type next command:\n", function(replData) {
     _.each(replCallbacks, function(cb){
       if(_.isFunction(cb)){
         cb(replData);

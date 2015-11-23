@@ -26,9 +26,6 @@ module.exports = {
 	},
 	QUEUE: {
 		ID: 'bds-user-finder-queue',
-		OPTIONS: {
-			durable: true,
-			autoDelete: false
-		}
+		OPTIONS: optionsExchangeDev
 	}
 };

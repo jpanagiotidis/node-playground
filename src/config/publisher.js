@@ -4,8 +4,13 @@ let data = require('./amqp-data');
 
 module.exports = {
 	NAME: 'bds-account-finder',
+  TYPE: 'A',
 	AMQP: {
 		EXCHANGE: data.EXCHANGE_ACCOUNT_FINDER,
-		QUEUE: data.QUEUE
+		CONSUME_QUEUE: [
+      {
+        QUEUE: data.QUEUE
+      }
+    ]
 	}
 }
