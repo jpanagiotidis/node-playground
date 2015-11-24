@@ -1,6 +1,6 @@
 'use strict';
 
-let data = require('./amqp-data');
+const data = require('./amqp-data');
 
 module.exports = {
   NAME: 'bds-account-finder',

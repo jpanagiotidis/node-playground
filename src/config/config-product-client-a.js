@@ -1,6 +1,6 @@
 'use strict';
 
-let data = require('./amqp-data');
+const data = require('./amqp-data');
 /**
  * Binds a queue to an exchange
  */

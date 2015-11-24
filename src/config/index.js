@@ -1,14 +1,12 @@
 'use strict';
 
-let 
-	_ = require('underscore'),
-	fs = require('fs'),
-	path = require('path'),
-	chance = new require('chance')()
-;
+const _ = require('underscore');
+const fs = require('fs');
+const path = require('path');
+const chance = new require('chance')();
 
 function getConfiguration(){
-	let args = processArgs();
+	const args = processArgs();
 	let config = {
 		NAME: chance.hash()
 	};
@@ -26,8 +24,8 @@ function getConfiguration(){
 
 function getFileConfig(confName){
 	let out;
-	let absPath = path.resolve(__dirname + '/' + confName + '.js');
-	let fileExists = fs.existsSync(absPath);
+	const absPath = path.resolve(__dirname + '/' + confName + '.js');
+	const fileExists = fs.existsSync(absPath);
 	if (fileExists) {
 		out = require('./' + confName);
 	}
@@ -35,7 +33,7 @@ function getFileConfig(confName){
 }
 
 function processArgs(){
-  let out = {};
+  const out = {};
 
   _.each(process.argv, function(value){
     value = value.split('=');

@@ -7,12 +7,12 @@ class RabbitBaseHandler{
 	}
 
 	*init(){
-		let self = this;
+		const self = this;
 		yield self.checkChannel();
 	}
 
 	*checkChannel(){
-		let self = this;
+		const self = this;
 		if(!self.channel){
 			self.channel = yield self.connection.createChannel();
 		}

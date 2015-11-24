@@ -1,14 +1,12 @@
 'use strict';
 
-let
-	RabbitBaseHandler = require('./rabbit-base-handler')
-;
+const RabbitBaseHandler = require('./rabbit-base-handler');
 
 class RabbitExchangeHandler extends RabbitBaseHandler{
 	constructor(config){
 		super(config);
 
-		let self = this;
+		const self = this;
 
 		self.id = config.ID;
 		self.options = config.OPTIONS;
@@ -16,7 +14,7 @@ class RabbitExchangeHandler extends RabbitBaseHandler{
 	}
 
 	*init(){
-		let self = this;
+		const self = this;
 
 		yield super.init();
 		yield self.channel.assertExchange(
@@ -27,7 +25,7 @@ class RabbitExchangeHandler extends RabbitBaseHandler{
 	}
 
 	*publish(key, message){
-		let self = this;
+		const self = this;
 
 		yield self.init();
 		console.log('EXCHANGE IS SENDING MESSGAGE');

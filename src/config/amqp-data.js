@@ -1,9 +1,9 @@
-var optionsDurable = {
+const optionsDurable = {
 	durable: true,
 	autoDelete: false
 };
 
-var optionsTemp = {
+const optionsTemp = {
 	durable: false,
 	autoDelete: true
 };

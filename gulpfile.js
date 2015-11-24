@@ -1,11 +1,12 @@
 'use strict';
 
-let gulp = require('gulp');
-let gutil = require('gulp-util');
-let exec = require('child_process').exec;
-let jshint = require('gulp-jshint');
+const gulp = require('gulp');
+const gutil = require('gulp-util');
+const exec = require('child_process').exec;
+const jshint = require('gulp-jshint');
+const console = require('better-console');
 
-let config = {
+const config = {
   paths: {
     js: ['./*.js', './src/**/*.js']
   }
@@ -14,14 +15,9 @@ let config = {
 gulp.task('default', function() {
   gutil.log('GULP READY');
   gulp.watch(config.paths.js, [
+    'console-clear',
     'lint'
   ]);
-// exec('ttab -w', function (err, stdout, stderr) {
-//    console.log(stdout);
-//    console.log(stderr);
-//    console.log(err);
-//    // cb(err);
-//  });
 });
 
 gulp.task('rmq-info', function(){
@@ -44,6 +40,10 @@ gulp.task('rmq-delete-all', function(){
     console.log(err);
   // cb(err);
   });
+});
+
+gulp.task('console-clear', function(){
+  console.clear();
 });
 
 gulp.task('lint', function() {

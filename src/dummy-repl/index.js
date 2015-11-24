@@ -1,13 +1,11 @@
 'use strict';
 
-let 
-  _ = require('underscore'),
-  readline = require('readline').createInterface({
-    input: process.stdin,
-    output: process.stdout
-  }),
-  replCallbacks = []
-;
+const _ = require('underscore');
+const readline = require('readline').createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+const replCallbacks = [];
 
 (function dummyREPL(){
   readline.question("Type next command:\n", function(replData) {

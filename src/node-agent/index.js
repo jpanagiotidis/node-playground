@@ -1,12 +1,12 @@
 'use strict';
 
-let RabbitHandler = require('./rabbit-handler');
-let eventBus = require('./event-bus');
-let constants = require('./constants');
+const RabbitHandler = require('./rabbit-handler');
+const eventBus = require('./event-bus');
+const constants = require('./constants');
 
 class NodeAgent{
   constructor(config){
-    let self = this;
+    const self = this;
 
     self.config = config;
     self.constants = constants;
@@ -20,7 +20,7 @@ class NodeAgent{
 
   *init(){
     console.log('INITIALIZING NODE AGENT...');
-    let self = this;
+    const self = this;
 
     if(self.amqp){
       yield self.amqp.init();

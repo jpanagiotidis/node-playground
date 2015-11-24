@@ -1,30 +1,29 @@
 'use strict';
 
-let RabbitBaseHandler = require('./rabbit-base-handler');
-let eventBus = require('../event-bus');
-let EVENTS = require('../constants').EVENTS.AMQP.QUEUE;
+const RabbitBaseHandler = require('./rabbit-base-handler');
+const eventBus = require('../event-bus');
+const EVENTS = require('../constants').EVENTS.AMQP.QUEUE;
 
 class RabbitQueueHandler extends RabbitBaseHandler{
 	constructor(config){
 		super(config);
 
-		let self = this;
+		const self = this;
 
 		self.id = config.ID ? config.ID : '';
 		self.options = config.OPTIONS ? config.OPTIONS : {};
 	}
 
 	*init(){
-		let self = this;
-		let res; //holds the response of the queue assertion
+		const self = this;
 
 		yield super.init();
-		res = yield self.channel.assertQueue(self.id, self.options);
+		const res = yield self.channel.assertQueue(self.id, self.options);
 		self.id = res.queue;
 	}
 
 	consume(){
-		let self = this;
+		const self = this;
 
 		self.channel.consume(self.id, function(data){
 			eventBus.emit(EVENTS.MESSAGE, self, data);
@@ -32,7 +31,7 @@ class RabbitQueueHandler extends RabbitBaseHandler{
 	}
 
 	ack(message, allUpTo){
-		let self = this;
+		const self = this;
 
 		allUpTo = allUpTo ? allUpTo : false;
 
@@ -40,7 +39,7 @@ class RabbitQueueHandler extends RabbitBaseHandler{
 	}
 
 	reject(message, requeue){
-		let self = this;
+		const self = this;
 
 		requeue = requeue !== undefined ? requeue : true;
 

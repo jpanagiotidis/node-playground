@@ -17,6 +17,7 @@
     "underscore": "1.8.3"
   },
   "devDependencies": {
+    "better-console": "0.2.4",
     "chance": "0.8.0",
     "gulp": "3.9.0",
     "gulp-jshint": "2.0.0",

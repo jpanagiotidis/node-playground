@@ -1,7 +1,6 @@
 'use strict';
 
 const EventEmitter = require('events');
-let instance;
 
 class EventBus extends EventEmitter{
 	constructor(){
@@ -9,6 +8,6 @@ class EventBus extends EventEmitter{
 	}
 }
 
-instance = new EventBus();
+const instance = new EventBus();
 
 module.exports = instance;

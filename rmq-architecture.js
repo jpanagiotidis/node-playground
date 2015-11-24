@@ -1,20 +1,20 @@
 'use strict';
 
-let _ = require('underscore');
-let co = require('co');
-let config = require('./src/config');
+const _ = require('underscore');
+const co = require('co');
+const config = require('./src/config');
 let replCallbacks;
-let NodeAgent = require('./src/node-agent');
-let sNode = new NodeAgent(config);
-let EVENTS = sNode.constants.EVENTS;
-let Chance = require('chance');
-let chance = new Chance();
+const NodeAgent = require('./src/node-agent');
+const sNode = new NodeAgent(config);
+const EVENTS = sNode.constants.EVENTS;
+const Chance = require('chance');
+const chance = new Chance();
 
 /**
  * BDS-ACCOUNT-FINDER
  */
 if(config.TYPE === 'A'){
-  let exchange = config.AMQP.EXCHANGE;
+  const exchange = config.AMQP.EXCHANGE;
   // let queue = config.AMQP.CONSUME_QUEUE.QUEUE;
 
   console.log('STARTING BDS-ACCOUNT-FINDER');
@@ -28,11 +28,11 @@ if(config.TYPE === 'A'){
   sNode.eventBus.on(EVENTS.AMQP.QUEUE.MESSAGE, function(queue, message){
     // console.log(message.content.toString());
     try{
-      let msgJSON = JSON.parse(message.content.toString());
+      const msgJSON = JSON.parse(message.content.toString());
       // console.log(msgJSON);
       if(msgJSON.TYPE === 'REQUEST'){
         console.log('RECEIVED REQUEST');
-        let query = {
+        const query = {
           TYPE: 'REQUEST',
           RESPOND_TO: {
             TYPE: 'QUEUE',
@@ -55,7 +55,7 @@ if(config.TYPE === 'A'){
       }else if(msgJSON.TYPE === 'RESPONSE'){
         console.log('RECEIVED RESPONSE FROM ' + msgJSON.RESULT.ID + ' FOR QUERY ' + msgJSON.QUERY.DATA);
 
-        let response = {
+        const response = {
           TYPE: 'RESPONSE',
           QUERY: msgJSON.QUERY,
           RESULT: msgJSON.RESULT
@@ -107,13 +107,13 @@ if(config.TYPE === 'B'){
 
   sNode.eventBus.on(EVENTS.AMQP.QUEUE.MESSAGE, function(queue, message){
     try{
-      let msgJSON = JSON.parse(message.content.toString());
+      const msgJSON = JSON.parse(message.content.toString());
       // console.log(msgJSON);
       if(msgJSON.TYPE === 'REQUEST'){
         console.log('RECEIVED REQUEST ' + msgJSON.QUERY.DATA);
 
         setTimeout(function(){
-          let response = {
+          const response = {
             TYPE: 'RESPONSE',
             QUERY: msgJSON.QUERY,
             RESULT: {
@@ -160,7 +160,7 @@ if(config.TYPE === 'C'){
       startREPL();
 
       replCallbacks.push(function(data){
-        let request = {
+        const request = {
           TYPE: 'REQUEST',
           RESPOND_TO: {
             TYPE: 'QUEUE',
@@ -188,7 +188,7 @@ if(config.TYPE === 'C'){
 
   sNode.eventBus.on(EVENTS.AMQP.QUEUE.MESSAGE, function(queue, message){
     try{
-      let msgJSON = JSON.parse(message.content.toString());
+      const msgJSON = JSON.parse(message.content.toString());
       // console.log(msgJSON);
       if(msgJSON.TYPE === 'RESPONSE'){
         console.log('RECEIVED RESPONSE');
@@ -217,120 +217,3 @@ function startREPL(){
     console.log('REPL...');
   });
 }
-
-// app = require('koa')(),
-// server = require('http').createServer(app.callback()),
-// io = require('socket.io'),
-// ioClient = require('socket.io-client'),
-// config = require('./config'),
-// port = config['PORT'] ? config['PORT'] : 5678,
-// connectionAddress = config['CONNECT'] ? config['CONNECT'] : undefined,
-// sockets = {},
-// rmq = undefined,
-
-// console.log(config);
-
-// if(config.AMQP){
-  
-  // rmq =
-
-  /*
-  if(config.AMQP.EXCHANGE){
-    replCallbacks.push(function(data){
-      co(amqp.publish(config.AMQP.EXCHANGE, 'find.user.*', data)).catch(
-        function(err){
-          console.log('ERROR');
-          console.log(err);
-        }
-      );
-    });
-  }
-
-  if(config.AMQP.QUEUE){
-    
-  }
-
-  if(config.AMQP.BIND){
-    co(amqp.bindQueue(config.AMQP.BIND)).catch(
-      function(err){
-        console.log('ERROR');
-        console.log(err);
-      }
-    );
-  }
-  */
-
-  // if(config.AMQP.BIND){
-  //   co(amqp.bindQueue(config.AMQP.BIND));
-  // }
-// }
-
-/*
-
-*/
-
-// co()
-// let testData = {
-//   user: 'Nikos',
-//   email: 'a@b.c'
-// };
-
-// co(rmq.publish(exProducts, 'bds.find.user', testData)).then(function(){
-//   console.log('RABBITMQ READY');
-// });
-
-/*
-sockets.input = io(server);
-sockets.input.on('connection', function(sock){
-  console.log('HELLO');
-  sock.on('event', function(data){
-    console.log('NEW MESSAGE: ');
-    console.log(data);
-  });
-});
-
-// sockets.input.on('event', function(data){
-//   console.log('SE AKOUO');
-// });
-
-if(connectionAddress){
-  sockets.output = ioClient.connect(connectionAddress);
-  sockets.output.on('connect', function(){
-    console.log('Connected at: ' + connectionAddress);
-  })
-}
-
-app.use(function *(next){
-  console.log('111111111');
-  yield next;
-});
-
-app.use(function *(next){
-  console.log('222222222');
-  yield next;
-});
-
-app.use(function *(next){
-  this.body = {
-    data: 'Hello World'
-  };
-  yield next;
-});
-
-server.listen(port);
-
-console.log('Listening at ' + port);
-
-if(config['REPL']){
-  (function dummyREPL(){
-    readline.question("Type next command:", function(replData) {
-      // console.log(replData);
-      if(sockets.output){
-        console.log('SENDING');
-        sockets.output.emit('event', {data:replData});
-      }
-      dummyREPL();
-    });
-  })();
-}
-*/

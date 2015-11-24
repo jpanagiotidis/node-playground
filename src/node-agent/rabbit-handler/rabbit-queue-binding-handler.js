@@ -1,15 +1,15 @@
 'use strict';
 
-let _ = require('underscore');
-let RabbitBaseHandler = require('./rabbit-base-handler');
-let RabbitExchangeHandler = require('./rabbit-exchange-handler');
-let RabbitQueueHandler = require('./rabbit-queue-handler');
+const _ = require('underscore');
+const RabbitBaseHandler = require('./rabbit-base-handler');
+const RabbitExchangeHandler = require('./rabbit-exchange-handler');
+const RabbitQueueHandler = require('./rabbit-queue-handler');
 
 class RabbitQueueBindingHandler extends RabbitBaseHandler{
   constructor(config){
     super(config);
 
-    let self = this;
+    const self = this;
 
     self.exchangeData = config.EXCHANGE;
     self.exchange = undefined;
@@ -31,7 +31,7 @@ class RabbitQueueBindingHandler extends RabbitBaseHandler{
   }
 
   *init(){
-    let self = this;
+    const self = this;
 
     yield super.init();
     

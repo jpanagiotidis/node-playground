@@ -1,15 +1,15 @@
 'use strict';
 
-let _ = require('underscore');
-let amqp = require('amqplib');
-let RabbitExchangeHandler = require('./rabbit-exchange-handler');
-let RabbitExchangeBindingHandler = require('./rabbit-exchange-binding-handler');
-let RabbitQueueHandler = require('./rabbit-queue-handler');
-let RabbitQueueBindingHandler = require('./rabbit-queue-binding-handler');
+const _ = require('underscore');
+const amqp = require('amqplib');
+const RabbitExchangeHandler = require('./rabbit-exchange-handler');
+const RabbitExchangeBindingHandler = require('./rabbit-exchange-binding-handler');
+const RabbitQueueHandler = require('./rabbit-queue-handler');
+const RabbitQueueBindingHandler = require('./rabbit-queue-binding-handler');
 
 class RabbitHandler{
   constructor(config, eventBus){
-    let self = this;
+    const self = this;
 
     self.config = config;
     self.eventBus = eventBus;
@@ -24,7 +24,7 @@ class RabbitHandler{
   }
 
   *init(){
-    let self = this;
+    const self = this;
 
     if(!self.isInitialized){
       console.log('INITIALIZING RABBITMQ HANDLER ');
@@ -54,7 +54,7 @@ class RabbitHandler{
   }
 
   *publish(exchangeData, key, message){
-    let self = this;
+    const self = this;
 
     if(exchangeData !== ''){
       yield addExcahnge(self, exchangeData);
@@ -84,21 +84,21 @@ function *addExcahnge(rmq, config){
 
 function *bindQueue(rmq, config){
   config = getConfigurationData(rmq, config);
-  let b = new RabbitQueueBindingHandler(config);
+  const b = new RabbitQueueBindingHandler(config);
   rmq.queueBindings[b.id] = b;
   yield b.init();
 }
 
 function *bindExchange(rmq, config){
   config = getConfigurationData(rmq, config);
-  let b = new RabbitExchangeBindingHandler(config);
+  const b = new RabbitExchangeBindingHandler(config);
   rmq.exchangeBindings[b.id] = b;
   yield b.init();
 }
 
 function *consumeQueue(rmq, config){
   config = getConfigurationData(rmq, config.QUEUE);
-  let b = new RabbitQueueHandler(config);
+  const b = new RabbitQueueHandler(config);
   yield b.init();
   rmq.queues[b.id] = b;
   b.consume();
