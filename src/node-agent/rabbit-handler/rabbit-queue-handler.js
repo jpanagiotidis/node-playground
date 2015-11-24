@@ -16,14 +16,14 @@ class RabbitQueueHandler extends RabbitBaseHandler{
 
 	*init(){
 		let self = this;
-		let res = undefined; //holds the response of the queue assertion
+		let res; //holds the response of the queue assertion
 
 		yield super.init();
 		res = yield self.channel.assertQueue(self.id, self.options);
 		self.id = res.queue;
 	}
 
-	*consume(){
+	consume(){
 		let self = this;
 
 		self.channel.consume(self.id, function(data){

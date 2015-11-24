@@ -61,7 +61,7 @@ class RabbitQueueBindingHandler extends RabbitBaseHandler{
       return self.channel.bindQueue(self.queue.id, self.exchange.id, key);
     });
 
-    yield self.queue.consume();
+    self.queue.consume();
   }
 }
 

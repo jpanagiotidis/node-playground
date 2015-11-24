@@ -8,17 +8,14 @@ let
 ;
 
 function getConfiguration(){
-	let 
-		args = processArgs(),
-		config = {
-			NAME: chance.hash()
-		},
-		fileConfig = undefined
-	;
+	let args = processArgs();
+	let config = {
+		NAME: chance.hash()
+	};
+	let fileConfig;
 
-	if(args['CONFIG']){
-		fileConfig = getFileConfig(args['CONFIG']);
-		// console.log(fileConfig);
+	if(args.CONFIG){
+		fileConfig = getFileConfig(args.CONFIG);
 		_.extend(config, fileConfig);
 	}
 
@@ -28,7 +25,7 @@ function getConfiguration(){
 }
 
 function getFileConfig(confName){
-	let out = undefined;
+	let out;
 	let absPath = path.resolve(__dirname + '/' + confName + '.js');
 	let fileExists = fs.existsSync(absPath);
 	if (fileExists) {
@@ -42,7 +39,9 @@ function processArgs(){
 
   _.each(process.argv, function(value){
     value = value.split('=');
-    value.length > 1 ? out[value[0]] = value[1] : _.noop();
+    if(value.length > 1){
+    	out[value[0]] = value[1];
+    }
   });
 
   return out;

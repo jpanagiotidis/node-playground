@@ -1,6 +1,5 @@
 'use strict';
 
-let _ = require('underscore');
 let RabbitHandler = require('./rabbit-handler');
 let eventBus = require('./event-bus');
 let constants = require('./constants');

@@ -8,7 +8,7 @@ class RabbitExchangeBindingHandler extends RabbitBaseHandler{
   constructor(config){
     if(!config.SOURCE &&
       !config.DESTINATION){
-      throw new Error('RabbitExchangeBindingHandler: Missing Configuration (SOURCE and/or DESTINATION missing).')
+      throw new Error('RabbitExchangeBindingHandler: Missing Configuration (SOURCE and/or DESTINATION missing).');
     }
 
     super(config);

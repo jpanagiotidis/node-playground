@@ -6,7 +6,7 @@ var optionsDurable = {
 var optionsTemp = {
 	durable: false,
 	autoDelete: true
-}
+};
 
 module.exports = {
 	EXCHANGE_ACCOUNT_FINDER: {

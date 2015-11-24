@@ -73,10 +73,6 @@ function getConfigurationData(rmq, config){
   return _.extend({}, config, rmq.configBase);
 }
 
-function *addQueue(data){
-
-}
-
 function *addExcahnge(rmq, config){
   yield rmq.init(rmq);
   if(!rmq.exchanges[config.ID]){
@@ -105,7 +101,7 @@ function *consumeQueue(rmq, config){
   let b = new RabbitQueueHandler(config);
   yield b.init();
   rmq.queues[b.id] = b;
-  yield b.consume();
+  b.consume();
 }
 
 module.exports = RabbitHandler;

@@ -18,6 +18,9 @@
   },
   "devDependencies": {
     "chance": "0.8.0",
-    "gulp": "3.9.0"
+    "gulp": "3.9.0",
+    "gulp-jshint": "2.0.0",
+    "gulp-util": "3.0.7",
+    "jshint": "2.8.0"
   }
 }

@@ -3,7 +3,7 @@
 let _ = require('underscore');
 let co = require('co');
 let config = require('./src/config');
-let replCallbacks = undefined;
+let replCallbacks;
 let NodeAgent = require('./src/node-agent');
 let sNode = new NodeAgent(config);
 let EVENTS = sNode.constants.EVENTS;
@@ -15,7 +15,7 @@ let chance = new Chance();
  */
 if(config.TYPE === 'A'){
   let exchange = config.AMQP.EXCHANGE;
-  let queue = config.AMQP.CONSUME_QUEUE.QUEUE;
+  // let queue = config.AMQP.CONSUME_QUEUE.QUEUE;
 
   console.log('STARTING BDS-ACCOUNT-FINDER');
   co(sNode.init()).catch(
@@ -53,7 +53,7 @@ if(config.TYPE === 'A'){
         );
         queue.ack(message);
       }else if(msgJSON.TYPE === 'RESPONSE'){
-        console.log('RECEIVED RESPONSE FROM ' + msgJSON.RESULT.ID);
+        console.log('RECEIVED RESPONSE FROM ' + msgJSON.RESULT.ID + ' FOR QUERY ' + msgJSON.QUERY.DATA);
 
         let response = {
           TYPE: 'RESPONSE',
@@ -110,7 +110,7 @@ if(config.TYPE === 'B'){
       let msgJSON = JSON.parse(message.content.toString());
       // console.log(msgJSON);
       if(msgJSON.TYPE === 'REQUEST'){
-        console.log('RECEIVED REQUEST');
+        console.log('RECEIVED REQUEST ' + msgJSON.QUERY.DATA);
 
         setTimeout(function(){
           let response = {
@@ -121,7 +121,7 @@ if(config.TYPE === 'B'){
               DATA: chance.sentence()
             },
             CLIENT_DATA: msgJSON.CLIENT_DATA
-          }
+          };
 
           co(sNode.amqp.publish('', 'bds-user-finder-queue', JSON.stringify(response))).catch(
             function(err){
@@ -213,7 +213,7 @@ if(config.TYPE === 'C'){
 function startREPL(){
   replCallbacks = require('./src/dummy-repl').callbacks;
       
-  replCallbacks.push(function(data){
+  replCallbacks.push(function(){
     console.log('REPL...');
   });
 }

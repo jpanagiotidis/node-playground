@@ -22,4 +22,4 @@ let
 
 module.exports = {
 	callbacks: replCallbacks
-}
+};

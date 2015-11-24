@@ -1,7 +1,7 @@
 'use strict';
 
 const EventEmitter = require('events');
-let instance = undefined;
+let instance;
 
 class EventBus extends EventEmitter{
 	constructor(){
