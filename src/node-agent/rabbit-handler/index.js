@@ -53,12 +53,12 @@ class RabbitHandler{
     }
   }
 
-  *publish(exchangeData, key, message){
+  *publish(exchangeData, key, message, options){
     const self = this;
 
     if(exchangeData !== ''){
       yield addExcahnge(self, exchangeData);
-      yield self.exchanges[exchangeData.ID].publish(key, message);
+      yield self.exchanges[exchangeData.ID].publish(key, message, options);
     }else{
       if(!self.channel){
         self.channel = yield self.connection.createChannel();

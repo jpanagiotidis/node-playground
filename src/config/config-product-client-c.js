@@ -6,16 +6,12 @@ const data = require('./amqp-data');
  */
 module.exports = {
   ID: 'PRODUCT_3',
-  TYPE: 'B',
+  TYPE: 'PRODUCT',
   AMQP: {
     BIND_EXCHANGE: [
       {
-        SOURCE: data.EXCHANGE_ACCOUNT_FINDER,
-        DESTINATION: data.EXCHANGE_P3,
-        KEYS: [
-          'query:find',
-          'yo-yo'
-        ]
+        SOURCE: data.EXCHANGE_ACCOUNT_FINDER_REQUESTS,
+        DESTINATION: data.EXCHANGE_P3
       }
     ],
     BIND_QUEUE: [

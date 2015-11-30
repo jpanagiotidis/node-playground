@@ -1,6 +1,8 @@
 'use strict';
 
+const _ = require('underscore');
 const RabbitBaseHandler = require('./rabbit-base-handler');
+const messageDefaults = require('./rabbit-defaults').MESSAGE_OPTIONS;
 
 class RabbitExchangeHandler extends RabbitBaseHandler{
 	constructor(config){
@@ -24,12 +26,18 @@ class RabbitExchangeHandler extends RabbitBaseHandler{
 		);
 	}
 
-	*publish(key, message){
+	*publish(key, message, options){
 		const self = this;
+
+		options = options ? options : {};
+
+		_.defaults(options, messageDefaults);
+
+		console.log(options);
 
 		yield self.init();
 		console.log('EXCHANGE IS SENDING MESSGAGE');
-		self.channel.publish(self.id, key, new Buffer(message));
+		self.channel.publish(self.id, key, new Buffer(message), options);
 	}
 }
 
