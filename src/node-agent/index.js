@@ -21,10 +21,6 @@ class NodeAgent{
   *init(){
     console.log('INITIALIZING NODE AGENT...');
     const self = this;
-
-    if(self.amqp){
-      yield self.amqp.init();
-    }
   }
 }
 

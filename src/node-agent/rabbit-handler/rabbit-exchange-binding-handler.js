@@ -53,6 +53,22 @@ class RabbitExchangeBindingHandler extends RabbitBaseHandler{
       return self.channel.bindExchange(self.exchangeDestination.id, self.exchangeSource.id, key);
     });
   }
+
+  destroy(){
+    const self = this;
+
+    super.destroy();
+
+    self.exchangeSourceData = null;
+    self.exchangeSource.destroy();
+    self.exchangeSource = null;
+
+    self.exchangeDestinationData = null;
+    self.exchangeDestination.destroy();
+    self.exchangeDestination = null;
+    
+    self.keys = null;
+  }
 }
 
 module.exports = RabbitExchangeBindingHandler;

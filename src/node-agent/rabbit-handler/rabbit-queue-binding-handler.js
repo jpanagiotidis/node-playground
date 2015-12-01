@@ -63,6 +63,22 @@ class RabbitQueueBindingHandler extends RabbitBaseHandler{
 
     self.queue.consume();
   }
+
+  destroy(){
+    const self = this;
+
+    super.destroy();
+
+    self.exchangeData = null;
+    self.exchange.destroy();
+    self.exchange = null;
+
+    self.queueData = null;
+    self.queue.destroy();
+    self.queue = null;
+    
+    self.keys = null;
+  }
 }
 
 module.exports = RabbitQueueBindingHandler;

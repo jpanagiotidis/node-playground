@@ -1,6 +1,7 @@
 'use strict';
 
 const _ = require('underscore');
+const co = require('co');
 const messageDefaults = require('./rabbit-defaults').MESSAGE_OPTIONS;
 const eventBus = require('../event-bus');
 const EVENTS = require('../constants').EVENTS.AMQP;
@@ -21,4 +22,4 @@ module.exports = {
       eventBus.emit(EVENTS.MESSAGE.CONFIRMATION_ACK, self.message);
     }
   }
-}
+};

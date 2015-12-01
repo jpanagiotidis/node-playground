@@ -42,6 +42,16 @@ class RabbitExchangeHandler extends RabbitBaseHandler{
       })
     );
   }
+
+  destroy(){
+    const self = this;
+
+    super.destroy();
+
+    self.id = null;
+    self.options = null;
+    self.type = null;
+  }
 }
 
 module.exports = RabbitExchangeHandler;

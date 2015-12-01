@@ -17,6 +17,12 @@ class RabbitBaseHandler{
 			self.channel = yield self.connection.createConfirmChannel();
 		}
 	}
+
+	destroy(){
+		const self = this;
+		self.connection = null;
+		self.channel = null;
+	}
 }
 
 module.exports = RabbitBaseHandler;

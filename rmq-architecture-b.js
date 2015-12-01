@@ -32,52 +32,48 @@ if(config.TYPE === 'CLIENT'){
       )
     ).catch(
       function(err){
-        console.error('ERROR');
+        console.error('ERROR CLIENT PUBLISH');
         console.error(err);
       }
     );
-  }
+  };
 
   co(sNode.init()).then(
     function(){
-      queueID = _.first(_.keys(sNode.amqp.queues));
-      console.log('LISTENS AT QUEUE ' + queueID);
-
       startREPL();
 
-      setInterval(
-        function(){
-          sendRequest('123');
-        },
-        100
-      );
+      // setInterval(
+      //   function(){
+      //     sendRequest('123');
+      //   },
+      //   100
+      // );
 
-      // replCallbacks.push(function(data){
-      //   sendRequest(data);
-      // });
+      replCallbacks.push(function(data){
+        sendRequest(data);
+      });
     }
   ).catch(
     function(err){
-      console.error('ERROR');
+      console.error('ERROR CLIENT INIT');
       console.error(err);
     }
   );
+
+  sNode.eventBus.on(EVENTS.AMQP.STATE.CONNECTED, function(){
+    console.log('CcCCCCCcccCCCCCCcccC');
+    queueID = _.first(_.keys(sNode.amqp.queues));
+    console.log('LISTENS AT QUEUE ' + queueID);
+  });
+
+  sNode.eventBus.on(EVENTS.AMQP.STATE.DISCONNECTED, function(){
+    console.log('DDdddDDDDDddDDDDDDdDDDDdddD');
+  });
 
   sNode.eventBus.on(EVENTS.AMQP.QUEUE.MESSAGE, function(queue, message){
     try{
       const msgJSON = JSON.parse(message.content.toString());
       console.log(msgJSON);
-      // // console.log(msgJSON);
-      // if(msgJSON.TYPE === 'RESPONSE'){
-      //   console.log('RECEIVED RESPONSE');
-
-      //   console.log(msgJSON.QUERY);
-      //   console.log(msgJSON.RESULT);
-
-      // }else{
-      //   console.log('RECEIVED UNKNOWN FORMAT');
-      //   queue.reject(message, false);
-      // }
       queue.ack(message);
     }catch(err){
       console.log('ERROR');
@@ -112,7 +108,6 @@ if(config.TYPE === 'CLIENT'){
   }
 
   const reqs = new RequestsHandler();
-  const responses = {};
 
   co(sNode.init()).catch(
     function(err){
@@ -139,13 +134,17 @@ if(config.TYPE === 'CLIENT'){
     }else{
       console.log('ERROR - tried to respont to undefined request!!!');
     }
+  };
 
-    // responses[responseID].queue.ack(responses[responseID].message);
-  }
+  sNode.eventBus.on(EVENTS.AMQP.STATE.CONNECTED, function(){
+    console.log('CcCCCCCcccCCCCCCcccC');
+
+  });
 
   sNode.eventBus.on(EVENTS.AMQP.QUEUE.MESSAGE, function(queue, message){
     try{
       const msgJSON = JSON.parse(message.content.toString());
+      console.log('RECEIVED REQUEST FROM ' + msgJSON.CLIENT_ID);
       if(msgJSON.QUERY){
         const rID = chance.string({
           length: 32,
@@ -188,7 +187,7 @@ if(config.TYPE === 'CLIENT'){
     }else{
       console.log('ERROR - tried to ack undefined response');
     }
-    console.log(process.memoryUsage());
+    // console.log(process.memoryUsage());
   });
 
   sNode.eventBus.on(EVENTS.AMQP.MESSAGE.CONFIRMATION_NACK, function(message){

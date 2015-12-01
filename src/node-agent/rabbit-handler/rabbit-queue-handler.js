@@ -5,46 +5,55 @@ const eventBus = require('../event-bus');
 const EVENTS = require('../constants').EVENTS.AMQP.QUEUE;
 
 class RabbitQueueHandler extends RabbitBaseHandler{
-	constructor(config){
-		super(config);
+  constructor(config){
+    super(config);
 
-		const self = this;
+    const self = this;
 
-		self.id = config.ID ? config.ID : '';
-		self.options = config.OPTIONS ? config.OPTIONS : {};
-	}
+    self.id = config.ID ? config.ID : '';
+    self.options = config.OPTIONS ? config.OPTIONS : {};
+  }
 
-	*init(){
-		const self = this;
+  *init(){
+    const self = this;
 
-		yield super.init();
-		const res = yield self.channel.assertQueue(self.id, self.options);
-		self.id = res.queue;
-	}
+    yield super.init();
+    const res = yield self.channel.assertQueue(self.id, self.options);
+    self.id = res.queue;
+  }
 
-	consume(){
-		const self = this;
+  consume(){
+    const self = this;
 
-		self.channel.consume(self.id, function(data){
-			eventBus.emit(EVENTS.MESSAGE, self, data);
-		});
-	}
+    self.channel.consume(self.id, function(data){
+      eventBus.emit(EVENTS.MESSAGE, self, data);
+    });
+  }
 
-	ack(message, allUpTo){
-		const self = this;
+  ack(message, allUpTo){
+    const self = this;
 
-		allUpTo = allUpTo ? allUpTo : false;
+    allUpTo = allUpTo ? allUpTo : false;
 
-		self.channel.ack(message, allUpTo);
-	}
+    self.channel.ack(message, allUpTo);
+  }
 
-	reject(message, requeue){
-		const self = this;
+  reject(message, requeue){
+    const self = this;
 
-		requeue = requeue !== undefined ? requeue : true;
+    requeue = requeue !== undefined ? requeue : true;
 
-		self.channel.reject(message, requeue);
-	}
+    self.channel.reject(message, requeue);
+  }
+
+  destroy(){
+    const self = this;
+
+    super.destroy();
+
+    self.id = null;
+    self.options = null;
+  }
 }
 
 module.exports = RabbitQueueHandler;
