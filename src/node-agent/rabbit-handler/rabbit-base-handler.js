@@ -14,7 +14,7 @@ class RabbitBaseHandler{
 	*checkChannel(){
 		const self = this;
 		if(!self.channel){
-			self.channel = yield self.connection.createChannel();
+			self.channel = yield self.connection.createConfirmChannel();
 		}
 	}
 }

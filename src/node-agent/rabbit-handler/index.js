@@ -61,10 +61,22 @@ class RabbitHandler{
       yield self.exchanges[exchangeData.ID].publish(key, message, options);
     }else{
       if(!self.channel){
-        self.channel = yield self.connection.createChannel();
+        self.channel = yield self.connection.createConfirmChannel();
       }
 
-      self.channel.sendToQueue(key, new Buffer(message));
+      const getMessageOptions = require('./rabbit-utils').getMessageOptions;
+      const confirmationCallback = require('./rabbit-utils').confirmationCallback;
+
+      options = getMessageOptions(options);
+
+      self.channel.sendToQueue(
+        key, 
+        new Buffer(message), 
+        options, 
+        confirmationCallback.bind({
+          message: message
+        })
+      );
     }
   }
 }

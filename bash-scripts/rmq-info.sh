@@ -1,13 +1,13 @@
 #!/bin/bash
 echo 'CONNECTIONS';
 rabbitmqctl list_connections;
-echo 'CHANNELS';
-rabbitmqctl list_channels;
+echo 'CHANNELS name transactional confirm consumer_count messages_unacknowledged messages_uncommitted acks_uncommitted messages_unconfirmed';
+rabbitmqctl list_channels name transactional confirm consumer_count messages_unacknowledged messages_uncommitted acks_uncommitted messages_unconfirmed;
 echo 'VHOSTS';
-rabbitmqctl list_vhosts;
-echo 'QUEUES NAME DURABLE AUTO_DELETE MESSAGES READY UNACKNOWLEDGED PERSISTENT';
+rabbitmqctl list_vhosts name tracing;
+echo 'QUEUES name durable auto_delete messages messages_ready messages_unacknowledged messages_persistent';
 rabbitmqctl list_queues name durable auto_delete messages messages_ready messages_unacknowledged messages_persistent;
-echo 'EXCHANGES NAME TYPE DURABLE AUTO_DELETE';
+echo 'EXCHANGES name type durable auto_delete';
 rabbitmqctl list_exchanges name type durable auto_delete;
-echo 'BINDINGS SOURCE_NAME SOURCE_KIND DESTINATION_NAME DESTINATION_KIND ROUTING_KEY';
+echo 'BINDINGS source_name source_kind destination_name destination_kind routing_key';
 rabbitmqctl list_bindings source_name source_kind destination_name destination_kind routing_key;

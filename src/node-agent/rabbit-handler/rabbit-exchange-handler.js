@@ -1,44 +1,47 @@
 'use strict';
 
-const _ = require('underscore');
 const RabbitBaseHandler = require('./rabbit-base-handler');
-const messageDefaults = require('./rabbit-defaults').MESSAGE_OPTIONS;
+const getMessageOptions = require('./rabbit-utils').getMessageOptions;
+const confirmationCallback = require('./rabbit-utils').confirmationCallback;
 
 class RabbitExchangeHandler extends RabbitBaseHandler{
-	constructor(config){
-		super(config);
+  constructor(config){
+    super(config);
 
-		const self = this;
+    const self = this;
 
-		self.id = config.ID;
-		self.options = config.OPTIONS;
-		self.type = config.TYPE;
-	}
+    self.id = config.ID;
+    self.options = config.OPTIONS;
+    self.type = config.TYPE;
+  }
 
-	*init(){
-		const self = this;
+  *init(){
+    const self = this;
 
-		yield super.init();
-		yield self.channel.assertExchange(
-			self.id,
-			self.type,
-			self.options
-		);
-	}
+    yield super.init();
+    yield self.channel.assertExchange(
+      self.id,
+      self.type,
+      self.options
+    );
+  }
 
-	*publish(key, message, options){
-		const self = this;
+  *publish(key, message, options){
+    const self = this;
 
-		options = options ? options : {};
+    options = getMessageOptions(options);
 
-		_.defaults(options, messageDefaults);
-
-		console.log(options);
-
-		yield self.init();
-		console.log('EXCHANGE IS SENDING MESSGAGE');
-		self.channel.publish(self.id, key, new Buffer(message), options);
-	}
+    yield self.init();
+    self.channel.publish(
+      self.id, 
+      key, 
+      new Buffer(message), 
+      options, 
+      confirmationCallback.bind({
+        message: message
+      })
+    );
+  }
 }
 
 module.exports = RabbitExchangeHandler;
